@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@600;700;800&display=swap');
+
+:root {
+  --bg:        #0f1117;
+  --bg2:       #161b27;
+  --bg3:       #1e2535;
+  --border:    #2a3348;
+  --accent:    #4f8ef7;
+  --accent2:   #7c3aed;
+  --green:     #22c55e;
+  --red:       #ef4444;
+  --amber:     #f59e0b;
+  --text:      #e2e8f0;
+  --text2:     #8892a4;
+  --radius:    12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+h1,h2,h3 { font-family: 'Syne', sans-serif; }
+
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.btn {
+  padding: 0.65rem 1.4rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity .15s, transform .1s;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn:hover { opacity: .85; transform: translateY(-1px); }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-danger  { background: var(--red);   color: #fff; }
+.btn-ghost {
+  background: transparent;
+  color: var(--text2);
+  border: 1px solid var(--border);
+}
+
+input, select {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color .2s;
+}
+input:focus, select:focus { border-color: var(--accent); }
+input::placeholder { color: var(--text2); }
+
+label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text2);
+  margin-bottom: 6px;
+  font-weight: 500;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+
+.form-group { margin-bottom: 1.2rem; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-income  { background: #166534; color: #4ade80; }
+.badge-expense { background: #7f1d1d; color: #fca5a5; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
