@@ -29,5 +29,5 @@ Requires finflow-backend running at `http://localhost:8080`
 
 ## Demo
 
-<img width="1912" height="1038" alt="image" src="https://github.com/user-attachments/assets/68476906-e498-44f5-895a-6ce1a950c2a1" />
+<img width="1912" height="1038" alt="FinFlowappoverview-ezgif com-optimize" src="https://github.com/user-attachments/assets/c0559a11-4d4c-46bc-87e9-8e30b2e15a6a" />
 
