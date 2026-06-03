@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { getDashboard, getNotifications, markNotificationRead } from '../services/api';
 import { Link } from 'react-router-dom';
 import {
-  PieChart, Pie, Cell, Tooltip,
-  ResponsiveContainer, Legend
+  PieChart, Pie, Cell,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid,
+  Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import {
   TrendingUp, TrendingDown, Wallet,
@@ -16,7 +17,6 @@ const COLORS = [
   '#4f8ef7','#7c3aed','#22c55e','#f59e0b',
   '#ef4444','#06b6d4','#ec4899','#84cc16'
 ];
-
 function StatCard({ label, value, icon: Icon, color }) {
   return (
     <div className="card" style={{
@@ -70,7 +70,22 @@ function BudgetBar({ budget }) {
     </div>
   );
 }
-
+// Build last 6 months labels for trend chart
+function getLast6Months() {
+  const months = ['Jan','Feb','Mar','Apr','May','Jun',
+                  'Jul','Aug','Sep','Oct','Nov','Dec'];
+  const result = [];
+  const now = new Date();
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    result.push({
+      label: months[d.getMonth()],
+      month: d.getMonth() + 1,
+      year: d.getFullYear()
+    });
+  }
+  return result;
+}
 export default function DashboardPage() {
   const now   = new Date();
   const [month, setMonth] = useState(now.getMonth() + 1);
@@ -108,6 +123,24 @@ export default function DashboardPage() {
     'Jan','Feb','Mar','Apr','May','Jun',
     'Jul','Aug','Sep','Oct','Nov','Dec'
   ];
+const [trendData, setTrendData] = useState([]);
+
+useEffect(() => {
+  const last6 = getLast6Months();
+  Promise.all(
+    last6.map(m =>
+      getDashboard(m.month, m.year)
+        .then(r => ({
+          month: m.label,
+          Income: Number(r.data.totalIncome  || 0),
+          Expense: Number(r.data.totalExpense || 0),
+        }))
+        .catch(() => ({
+          month: m.label, Income: 0, Expense: 0
+        }))
+    )
+  ).then(setTrendData);
+}, []);
 
   if (loading) return <Loader/>;
 
@@ -224,6 +257,40 @@ export default function DashboardPage() {
               </ResponsiveContainer>
             )
           }
+        </div>
+        {/* Monthly Trend Bar Chart */}
+        <div className="card" style={{ marginBottom:'1.5rem' }}>
+          <h3 style={{ fontSize:'1rem', marginBottom:'1rem',
+            color:'#8892a4', fontWeight:600,
+            textTransform:'uppercase', letterSpacing:'.04em' }}>
+            6-Month Trend
+          </h3>
+          <ResponsiveContainer width="100%" height={220}>
+            <BarChart data={trendData}
+              margin={{ top:5, right:10, left:10, bottom:5 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#2a3348"/>
+              <XAxis dataKey="month"
+                tick={{ fill:'#8892a4', fontSize:12 }}
+                axisLine={{ stroke:'#2a3348' }}/>
+              <YAxis
+                tick={{ fill:'#8892a4', fontSize:12 }}
+                axisLine={{ stroke:'#2a3348' }}
+                tickFormatter={v => `₹${(v/1000).toFixed(0)}k`}/>
+              <Tooltip
+                contentStyle={{
+                  background:'#1e2535',
+                  border:'1px solid #2a3348',
+                  borderRadius:8, color:'#e2e8f0'
+                }}
+                formatter={v => `₹${Number(v).toLocaleString('en-IN')}`}/>
+              <Legend
+                formatter={v => (
+                  <span style={{ color:'#e2e8f0', fontSize:'0.8rem' }}>{v}</span>
+                )}/>
+              <Bar dataKey="Income"  fill="#22c55e" radius={[4,4,0,0]}/>
+              <Bar dataKey="Expense" fill="#ef4444" radius={[4,4,0,0]}/>
+            </BarChart>
+          </ResponsiveContainer>
         </div>
 
         {/* Budget health */}

@@ -1,8 +1,10 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { LayoutDashboard, ArrowLeftRight, LogOut, Bell } from 'lucide-react';
+import { LayoutDashboard, ArrowLeftRight,
+  PiggyBank, LogOut, Bell } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { getNotifications } from '../services/api';
+
 
 export default function Navbar() {
   const { user, logoutUser } = useAuth();
@@ -54,7 +56,11 @@ export default function Navbar() {
         <Link to="/transactions" style={linkStyle('/transactions')}>
           <ArrowLeftRight size={16}/> Transactions
         </Link>
+        <Link to="/budgets" style={linkStyle('/budgets')}>
+                <PiggyBank size={16}/> Budgets
+        </Link>
       </div>
+
 
       <div style={{ display:'flex', alignItems:'center', gap:'12px' }}>
         {/* Notification bell */}

@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import TransactionsPage from './pages/TransactionsPage';
+import BudgetsPage from './pages/BudgetsPage';
 
 function Layout({ children }) {
   return (
@@ -48,6 +49,11 @@ export default function App() {
             <ProtectedRoute>
               <Layout><TransactionsPage /></Layout>
             </ProtectedRoute>
+          }/>
+          <Route path="/budgets" element={
+            <ProtectedRoute>
+               <Layout><BudgetsPage /></Layout>
+           </ProtectedRoute>
           }/>
 
           {/* Default */}
